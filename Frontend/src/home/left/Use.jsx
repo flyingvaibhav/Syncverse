@@ -10,7 +10,7 @@ function Use() {
   </div>
 </div>
 <div>
-    <h1>
+    <h1 className='text-lg font-bold'>
         Vaibhav Pandey
     </h1>
     <span>Vaibhav@gmaill.com</span>

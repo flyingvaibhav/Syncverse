@@ -9,17 +9,7 @@ function User() {
   <Use></Use>
   <Use></Use>
   <Use></Use>
-  <Use></Use>
-  <Use></Use>
-  <Use></Use>
-  <Use></Use>
-  <Use></Use>
-  <Use></Use>
-  <Use></Use>
-  <Use></Use>
-  <Use></Use>
-  <Use></Use>
-  <Use></Use>
+  
  
   </div>
 
