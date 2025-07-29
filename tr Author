@@ -1,0 +1,17 @@
+[33mcommit 01f91a2c29552b83dc6330ee1bad3237dd71fdaf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Vaibhav Pandey <vaibhavpandeyhacka@gmail.com>
+Commit: Vaibhav Pandey <vaibhavpandeyhacka@gmail.com>
+
+    Trigger green square
+
+[33mcommit a012a023dfa0882ce1adf0645f7dd40eb85abbc5[m
+Author: Vaibhav Pandey <vaibhavpandeyhacka@gmail.com>
+Commit: Vaibhav Pandey <vaibhavpandeyhacka@gmail.com>
+
+    Added chat bubbles UI and input box
+
+[33mcommit 6cbd4d9e7de5a0e0f4aa710679eb0727ceffa6ee[m
+Author: Vaibhav Pandey <vaibhavpandeyhacka@gmail.com>
+Commit: Vaibhav Pandey <vaibhavpandeyhacka@gmail.com>
+
+    Initial commit - Added chat layout / Left section

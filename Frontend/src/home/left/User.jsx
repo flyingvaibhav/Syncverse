@@ -3,7 +3,7 @@ import Use from './Use';
 
 function User() {
   return (
-  <div style={{maxHeight:'calc(84vh-10vh)'}}  className=' my-1 flex-Vaibhav overflow-y-auto'>
+  <div  className=' py-2 flex-Vaibhav overflow-y-auto' style={{maxHeight:'calc(84vh-1vh)'}}  >
        <Use></Use>
   <Use></Use>
   <Use></Use>

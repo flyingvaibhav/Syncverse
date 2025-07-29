@@ -1,17 +1,27 @@
-import React from 'react'
-import { IoMdSend } from "react-icons/io";
+import React from 'react';
+import { IoSend } from "react-icons/io5";
 
 
 function Type() {
   return (
-    <div>
-        <input type="text" placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-<button className='button button-primary'>
-    <IoMdSend/>
+ <>
+ <div className='flex space-x-3 h-[10vh] text-center  bg-gray-800'>
+ <div className= 'w-[70%] mx-4'>
+        <input type="text"
+         placeholder="Type here" 
+        className="border-[1px] border-gray-700  flex items-center  w-full py-4 px-3
+         rounded-x1 grow outline-none bg-slate-900 mt-1" />
+        </div>
+<button className='text-3xl'>
+    <IoSend/>
 </button>
 
-    </div>
+   
+
+ </div>
+ 
+ </>
   )
 }
 
-export default Type
+export default Type;
