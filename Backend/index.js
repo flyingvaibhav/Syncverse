@@ -13,7 +13,7 @@ try {
   .then(console.log("MongoDB Connected "));
 }
 catch (error) {
-  console.log(error);
+  console.log("MongoDB connection error:", error);
 
   
 }
