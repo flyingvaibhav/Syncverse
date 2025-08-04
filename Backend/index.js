@@ -9,20 +9,13 @@ const port = 5002
 const URI = process.env.MONGODB_URI;
 
 try {
-  mongoose.connect(URI)
-  .then(console.log("MongoDB Connected "));
-}
+  mongoose.connect(URI).then(console.log("MongoDB Connected"));}
+  
 catch (error) {
-  console.log("MongoDB connection error:", error);
+  console.log("MongoDB  error:", error);
 
   
 }
-
-
-
-
-
-
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${port}`)
 })
