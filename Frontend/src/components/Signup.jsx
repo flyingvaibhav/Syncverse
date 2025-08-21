@@ -1,10 +1,11 @@
 import React from 'react'
 import { useForm } from "react-hook-form"
+import axios from 'axios';
 
 export default function Signup() {
 
 
- function Signup() {
+ 
 
   const {
     register,
@@ -18,7 +19,7 @@ export default function Signup() {
 
   };
   const onSubmit = (data) => {
-    const userInfo ={
+    const userInfo = {
       name: data.username,
       email: data.email,
       password: data.password,
@@ -28,7 +29,15 @@ export default function Signup() {
 axios.post('http://localhost:5002/user/signup', userInfo) 
 .then((response)=>  {
   console.log(response.data);
-})
+if(response.data){
+  alert("Signup successful! You can now log in.");
+}
+
+localStorage.setItem("userInfo", JSON.stringify(userInfo)); 
+
+}).catch((error) => {
+  console.error(error);
+});
   }
   return (
   <>
@@ -153,4 +162,3 @@ className='text-white bg-blue-600  cursor-pointer w-full py-2 rounded-lg'></inpu
   )
 }
 
-}

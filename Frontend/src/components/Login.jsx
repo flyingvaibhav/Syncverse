@@ -1,6 +1,53 @@
 import React from 'react'
+import { useForm } from "react-hook-form"
+import axios from 'axios';
+
 
 function Login() {
+
+
+
+
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm()
+  const password = watch('password', '')
+  const confirmPassword = watch('confirmPassword', '')
+  const validatePasswordMatch=(value) => { return value === password || "Passwords do not match" 
+
+  };
+  
+
+  const onSubmit = (data) => {
+    const userInfo = {
+      name: data.username,
+      email: data.email,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+
+    }
+axios.post('http://localhost:5002/user/login', userInfo) 
+.then((response)=>  {
+  console.log(response.data);
+if(response.data){
+  alert("Login successful! You can now log in.");
+}
+
+localStorage.setItem("userInfo", JSON.stringify(userInfo)); 
+
+}).catch((error) => {
+  console.error(error);
+});
+  }
+
+
+
+
+  
   return (
     <>
     
@@ -11,7 +58,7 @@ function Login() {
     <div className="flex h-screen items-center justify-center">
 
 
-<form action="" className='border border-black px-6 py-3 rounded-md space-y-3 w-96'>
+<form onSubmit={handleSubmit(onSubmit)} className='border border-black px-6 py-3 rounded-md space-y-3 w-96'>
 <h1 className='text-2xl items-center'> Login with your {" "} <span className='font-bold text-blue-600' >Account</span>
 </h1>
 <h2>Its free and always will be</h2>
