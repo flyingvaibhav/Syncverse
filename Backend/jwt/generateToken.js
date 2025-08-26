@@ -1,12 +1,14 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
-const createTokenAndSaveCookie = (res, userId) => {
-  const token = jwt.sign({ userIid: userId.toString() }, process.env.JWT_TOKEN, { expiresIn: '5d' });// will expire in 5 days
+const createTokenAndSaveCookie = (userId, res) => {
+  if (!process.env.JWT_TOKEN) throw new Error("JWT_TOKEN not set");
+  const token = jwt.sign({ userId: userId.toString() }, process.env.JWT_TOKEN, { expiresIn: "10d" });
 
   res.cookie("jwt", token, {
-    httpOnly: true, // protects against XSS
-    secure: process.env.NODE_ENV === 'production', // only in HTTPS in production
-    sameSite: 'strict', // protects against CSRF
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 10 * 24 * 60 * 60 * 1000,
   });
 
   return token;

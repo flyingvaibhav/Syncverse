@@ -1,25 +1,58 @@
-import React from 'react'
-import Left from './home/left/left'
-import Right from './home/left/right/Right'
-import Logout from './home/left/left1/Logout'
-import Signup from './components/signup'
-import Login from './components/Login'
+import React from "react";
+import Left from "./home/Leftpart/Left";
+import Right from "./home/Rightpart/Right";
+import Signup from "./components/Signup.jsx";
+import Login from "./components/Login";
+import { useAuth } from "./context/AuthProvider";
+import { Toaster } from "react-hot-toast";
+import Logout from "./home/left1/Logout";
 
+import { Navigate, Route, Routes } from "react-router-dom";
 function App() {
+  const [authUser, setAuthUser] = useAuth();
+  console.log(authUser);
   return (
     <>
-                 { /*<div className='flex h-screen'>
-                    <Logout></Logout>
-                  <Left></Left>
-                  <Right></Right>
-                </div> 
-                 <Login/>
-                */}
-
-               
-<Signup/>
-              </>
-  )
+      <Routes>
+        <Route
+          path="/"
+          element={
+            authUser ? (
+              <div className="flex h-screen">
+                <Logout setAuthUser={setAuthUser} /> {/* pass the prop */}
+                <Left />
+                <Right />
+              </div>
+            ) : (
+              <Navigate to={"/login"} />
+            )
+          }
+        />
+        <Route
+          path="/login"
+          element={authUser ? <Navigate to="/" /> : <Login />}
+        />
+        <Route
+          path="/signup"
+          element={authUser ? <Navigate to="/" /> : <Signup />}
+        />
+      </Routes>
+      <Toaster />
+    </>
+  );
 }
 
-export default App
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
