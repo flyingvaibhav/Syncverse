@@ -7,13 +7,13 @@ function Logout({ setAuthUser }) {
   const [loading, setLoading] = useState(false);
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:5004/api/user/logout", {}, { withCredentials: true });
-      localStorage.removeItem("ChatApp");
+      await axios.post("/api/user/logout", {}, { withCredentials: true });
       setAuthUser(null);
+      localStorage.removeItem("ChatApp");
       toast.success("Logged out successfully");
-    } catch (e) {
-      console.error("Logout error:", e);
-      toast.error("Error in logging out");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Logout failed");
     }
   };
   return (

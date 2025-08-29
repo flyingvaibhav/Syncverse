@@ -14,7 +14,7 @@ function Signup() {
   const onSubmit = async (data) => {
     try {
       const res = await axios.post(
-        "http://localhost:5004/api/user/signup",
+        "/api/user/signup",
         {
           fullname: data.fullname,
           email: data.email,

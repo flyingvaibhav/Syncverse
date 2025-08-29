@@ -8,6 +8,7 @@ const server = http.createServer(app);
 export const io = new Server(server, {
   cors: {
     origin: [
+      "https://syncverse-wdz7.onrender.com", // Your Render domain
       "http://localhost:3000",
       "http://localhost:3001",
       "http://localhost:3002",   // your current Vite port

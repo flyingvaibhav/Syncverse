@@ -20,8 +20,8 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const allowedOrigins = isProduction 
   ? [
-      "https://your-app-name.onrender.com", // Replace with your actual Render domain
-      "https://your-custom-domain.com",     // Replace with your custom domain if any
+      "https://syncverse-wdz7.onrender.com", // Your actual Render domain
+      "https://syncverse-wdz7.onrender.com", // Also include without www
     ]
   : [
       "http://localhost:3000",

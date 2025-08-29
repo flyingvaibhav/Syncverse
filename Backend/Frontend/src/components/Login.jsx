@@ -12,7 +12,7 @@ function Login() {
   const onSubmit = async (data) => {
     try {
       const res = await axios.post(
-        "http://localhost:5004/api/user/login",
+        "/api/user/login",
         { email: data.email, password: data.password },
         { withCredentials: true }
       );
