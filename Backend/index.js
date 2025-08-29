@@ -3,22 +3,36 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import path from "path";
+import { fileURLToPath } from "url";
 import userRoute from "./routes/user.route.js";
 import messageRoute from "./routes/message.route.js";
 import { app, server } from "./SocketIO/server.js";
 
 dotenv.config();
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "http://localhost:3002",
-  "http://localhost:5173",
-  "http://127.0.0.1:3000",
-  "http://127.0.0.1:3001",
-  "http://127.0.0.1:3002",
-  "http://127.0.0.1:5173",
-];
+// Get __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Production vs Development environment
+const isProduction = process.env.NODE_ENV === "production";
+
+const allowedOrigins = isProduction 
+  ? [
+      "https://your-app-name.onrender.com", // Replace with your actual Render domain
+      "https://your-custom-domain.com",     // Replace with your custom domain if any
+    ]
+  : [
+      "http://localhost:3000",
+      "http://localhost:3001", 
+      "http://localhost:3002",
+      "http://localhost:5173",
+      "http://127.0.0.1:3000",
+      "http://127.0.0.1:3001",
+      "http://127.0.0.1:3002",
+      "http://127.0.0.1:5173",
+    ];
 
 app.use(
   cors({
@@ -64,9 +78,30 @@ app.get("/db-health", (_req, res) => {
   });
 });
 
-// routes
+// API routes
 app.use("/api/user", userRoute);
 app.use("/api/message", messageRoute);
+
+// Serve static files from the React build folder in production
+if (isProduction) {
+  // Serve static files from the React build
+  app.use(express.static(path.join(__dirname, "Frontend", "dist")));
+  
+  // Handle React routing, return all requests to React app
+  app.get("*", (req, res) => {
+    // Don't serve React for API routes
+    if (req.path.startsWith("/api/")) {
+      return res.status(404).json({ error: 'API route not found' });
+    }
+    
+    // Serve React app for all other routes
+    res.sendFile(path.join(__dirname, "Frontend", "dist", "index.html"));
+  });
+  
+  console.log("Production mode: Serving React frontend");
+} else {
+  console.log("Development mode: React frontend not served");
+}
 
 // Global error handler middleware
 app.use((err, req, res, next) => {
@@ -83,9 +118,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Something went wrong. Please try again." });
 });
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+// 404 handler for API routes only
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ error: 'API route not found' });
 });
 
 // Improved MongoDB connection with better options
@@ -153,4 +188,10 @@ process.on('SIGINT', () => {
   });
 });
 
-server.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+server.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
+  console.log(`🌍 Environment: ${isProduction ? 'Production' : 'Development'}`);
+  if (isProduction) {
+    console.log(`📱 React frontend will be served from: ${path.join(__dirname, "Frontend", "dist")}`);
+  }
+});
