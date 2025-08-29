@@ -14,6 +14,8 @@ export const sendMessage = async (req, res) => {
     const { id: receiverId } = req.params;
     const senderId = req.userId; // set by secureRoute
     
+    console.log(`Sending message from ${senderId} to ${receiverId}: ${message}`);
+    
     let conversation = await Conversation.findOne({
       members: { $all: [senderId, receiverId] },
     }).maxTimeMS(5000);
@@ -39,8 +41,13 @@ export const sendMessage = async (req, res) => {
     await Promise.all([conversation.save(), newMessage.save()]); // run parallel
     
     const receiverSocketId = getReceiverSocketId(receiverId);
+    console.log(`Receiver socket ID for ${receiverId}: ${receiverSocketId}`);
+    
     if (receiverSocketId) {
+      console.log(`Emitting newMessage to socket ${receiverSocketId}`);
       io.to(receiverSocketId).emit("newMessage", newMessage);
+    } else {
+      console.log(`No socket found for receiver ${receiverId}`);
     }
     
     res.status(201).json(newMessage);

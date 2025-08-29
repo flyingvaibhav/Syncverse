@@ -3,7 +3,7 @@ import useConversation from "../statemanage/useConversation.js";
 import axios from "axios";
 const useGetMessage = () => {
   const [loading, setLoading] = useState(false);
-  const { messages, setMessage, selectedConversation } = useConversation();
+  const { messages, setMessage, selectedConversation, clearMessages } = useConversation();
 
   useEffect(() => {
     const getMessages = async () => {
@@ -20,10 +20,20 @@ const useGetMessage = () => {
           console.log("Error in getting messages", error);
           setLoading(false);
         }
+      } else {
+        // Clear messages when no conversation is selected
+        clearMessages();
       }
     };
+    
+    // Clear messages first when switching conversations
+    if (selectedConversation) {
+      clearMessages();
+    }
+    
     getMessages();
-  }, [selectedConversation, setMessage]);
+  }, [selectedConversation, setMessage, clearMessages]);
+  
   return { loading, messages };
 };
 

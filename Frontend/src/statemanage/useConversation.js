@@ -1,15 +1,45 @@
 import { create } from "zustand";
 
-const useConversation = create((set) => ({
+const useConversation = create((set, get) => ({
   selectedConversation: null,
   setSelectedConversation: (selectedConversation) =>
     set({ selectedConversation }),
-  messages: [],
+  messages: [], // This will be the current conversation's messages
+  messagesMap: new Map(), // Store messages for each conversation
+  
   // setMessage can accept either an array or an updater function(prev) => newArray
-  setMessage: (updater) =>
-    set((state) => ({
-      messages:
-        typeof updater === "function" ? updater(state.messages) : updater,
-    })),
+  setMessage: (updater) => {
+    const { selectedConversation } = get();
+    if (!selectedConversation?._id) return;
+    
+    set((state) => {
+      const currentMessages = state.messagesMap.get(selectedConversation._id) || [];
+      let newMessages;
+      
+      if (typeof updater === "function") {
+        newMessages = updater(currentMessages);
+      } else {
+        newMessages = updater;
+      }
+      
+      // Update the map
+      const newMessagesMap = new Map(state.messagesMap);
+      newMessagesMap.set(selectedConversation._id, newMessages);
+      
+      return {
+        messages: newMessages,
+        messagesMap: newMessagesMap
+      };
+    });
+  },
+  
+  // Get messages for a specific conversation
+  getMessagesForConversation: (conversationId) => {
+    const { messagesMap } = get();
+    return messagesMap.get(conversationId) || [];
+  },
+  
+  // Clear messages when switching conversations
+  clearMessages: () => set({ messages: [] }),
 }));
 export default useConversation;

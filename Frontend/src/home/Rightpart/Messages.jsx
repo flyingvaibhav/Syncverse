@@ -3,10 +3,16 @@ import Message from "./Message";
 import useGetMessage from "../../context/useGetMessage.js";
 import Loading from "../../components/Loading.jsx";
 import useGetSocketMessage from "../../context/useGetSocketMessage.js";
+import { useSocketContext } from "../../context/SocketContext.jsx";
+
 function Messages() {
   const { loading, messages } = useGetMessage();
+  const { isConnected } = useSocketContext();
   useGetSocketMessage(); // listing incoming messages
-  console.log(messages);
+  
+  console.log("Messages component - Loading:", loading);
+  console.log("Messages component - Messages:", messages);
+  console.log("Messages component - Socket connected:", isConnected);
 
   const lastMsgRef = useRef();
   useEffect(() => {
@@ -18,6 +24,7 @@ function Messages() {
       }
     }, 100);
   }, [messages]);
+  
   return (
     <div
       className="flex-1 overflow-y-auto"

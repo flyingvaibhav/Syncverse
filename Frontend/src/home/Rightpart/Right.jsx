@@ -4,16 +4,50 @@ import Messages from "./Messages";
 import Typesend from "./Typesend";
 import useConversation from "../../statemanage/useConversation.js";
 import { useAuth } from "../../context/AuthProvider.jsx";
+import { useSocketContext } from "../../context/SocketContext.jsx";
 import { CiMenuFries } from "react-icons/ci";
+import sound from "../../assets/notification.mp3";
 
 function Right() {
   const { selectedConversation, setSelectedConversation } = useConversation();
+  const { isConnected } = useSocketContext();
+  
   // Only clear selection on unmount, not immediately on mount.
   useEffect(() => {
     return () => setSelectedConversation(null);
   }, [setSelectedConversation]);
+  
+  const testNotification = () => {
+    try {
+      const notification = new Audio(sound);
+      notification.volume = 0.7;
+      notification.play();
+      
+      // Also test browser notification
+      if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("Test Notification", {
+          body: "This is a test notification sound!",
+          icon: "/vite.svg"
+        });
+      }
+    } catch (error) {
+      console.log("Error testing notification:", error);
+    }
+  };
+  
   return (
     <div className="w-full bg-zinc-900 text-gray-300">  
+      {/* Socket Connection Status */}
+      <div className={`px-4 py-2 text-sm flex justify-between items-center ${isConnected ? 'bg-green-600' : 'bg-red-600'}`}>
+        <span>Socket: {isConnected ? 'Connected' : 'Disconnected'}</span>
+        <button 
+          onClick={testNotification}
+          className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-xs"
+        >
+          Test Sound
+        </button>
+      </div>
+      
       <div>
         {!selectedConversation ? (
           <NoChatSelected />
